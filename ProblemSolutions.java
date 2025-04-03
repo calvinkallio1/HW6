@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Calvin Kallio SEC 002
  *
  *   This java file contains the problem solutions for the methods lastBoulder,
  *   showDuplicates, and pair methods. You should utilize the Java Collection
@@ -65,10 +65,39 @@ public class ProblemSolutions {
 
   public static int lastBoulder(int[] boulders) {
 
-      //
-      // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME / SECTION # ABOVE
-      //
-      return -1;
+      PriorityQueue<Integer> boulderQueue = new PriorityQueue<>(Comparator.reverseOrder());
+      for (int boulder : boulders) {
+
+          boulderQueue.add(boulder);
+
+      }
+
+      while (!boulderQueue.isEmpty() && boulderQueue.size() != 1){
+
+          int boulder1 = boulderQueue.poll();
+          int boulder2 = boulderQueue.poll();
+          int newBoulder;
+
+          if (boulder1 > boulder2) {
+
+              newBoulder = boulder1 - boulder2;
+              boulderQueue.add(newBoulder);
+
+          } else if (boulder1 < boulder2){
+
+              newBoulder = boulder2 - boulder1;
+              boulderQueue.add(newBoulder);
+
+          }
+
+
+      }
+
+      if (boulderQueue.isEmpty()){
+          return 0;
+      } else {
+          return boulderQueue.peek();
+      }
   }
 
 
@@ -91,10 +120,22 @@ public class ProblemSolutions {
 
     public static ArrayList<String> showDuplicates(ArrayList<String> input) {
 
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure result is sorted in ascending order
+        HashMap<String, Integer> map = new HashMap<>();
+        ArrayList<String> duplicateStrings = new ArrayList<String>();
+
+        for (String entry : input){
+
+            map.put(entry, map.getOrDefault(entry, 0) + 1);
+
+        }
+
+        for (String key : input){
+            if (map.get(key) > 1 && duplicateStrings.contains(key) != true) {
+                duplicateStrings.add(key);
+            }
+        }
+
+        return duplicateStrings;  // Make sure result is sorted in ascending order
 
     }
 
@@ -131,9 +172,25 @@ public class ProblemSolutions {
 
     public static ArrayList<String> pair(int[] input, int k) {
 
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure returned lists is sorted as indicated above
+        ArrayList<String> finalList = new ArrayList<String>();
+
+        for (int i : input) {
+
+            int numToFind = k - i;
+
+            for (int j : input){
+                if (numToFind == j){
+
+                    if (j > i && !finalList.contains("(" + i + ", " + j + ")")){
+                        finalList.add("(" + i + ", " + j + ")");
+                    } else if ((j < i || j == i) && !finalList.contains("(" + j + ", " + i + ")")){
+                        finalList.add("(" + j + ", " + i + ")");
+                    }
+
+                }
+            }
+        }
+
+        return finalList;  // Make sure returned lists is sorted as indicated above
     }
 }
